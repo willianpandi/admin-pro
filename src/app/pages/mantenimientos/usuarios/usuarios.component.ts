@@ -17,7 +17,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   usuariosTem: Usuario[] = [];
   desde: number = 0;
   cargando: boolean = true;
-  public imgSubs!: Subscription;
+  imgSubs!: Subscription;
 
   constructor(
     private usuarioService: UsuarioService,
@@ -31,7 +31,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cargarUsuarios();
     this.imgSubs = this.modalService.nuevaImagen
-      .pipe(delay(100),)
+      .pipe(delay(1000))
       .subscribe( img => this.cargarUsuarios());
   }
 
@@ -63,7 +63,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       return this.usuarios = this.usuariosTem;
     }
     this.busquedaService.busqueda('usuarios', termino)
-        .subscribe( resp => {
+        .subscribe( (resp: Usuario[]) => {
           this.usuarios = resp;
         }
         )

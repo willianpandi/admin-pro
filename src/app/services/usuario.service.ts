@@ -88,7 +88,11 @@ export class UsuarioService {
       ...data,
       role: this.usuario.role,
     };
-    return this.http.put(`${base_url}/usuarios/${this.uuid}`, data, this.headers);
+    return this.http.put(
+      `${base_url}/usuarios/${this.uuid}`,
+      data,
+      this.headers
+    );
   }
 
   login(formData: LoginForm) {
@@ -110,29 +114,39 @@ export class UsuarioService {
 
   cargarUsuarios(desde: number = 0) {
     const url = `${base_url}/usuarios?desde=${desde}`;
-    return this.http.get<CargarUsuarios>(url, this.headers)
-        .pipe(
-          // delay(2000),
-          map( resp => {
-            const usuarios = resp.usuarios.map( user => new Usuario(user.nombre, user.email, '', user.img, user.google, user.role, user.uuid ));
-            return{
-              total: resp.total,
-              usuarios,
-            }
-          })
-        )
+    return this.http.get<CargarUsuarios>(url, this.headers).pipe(
+      // delay(2000),
+      map((resp) => {
+        const usuarios = resp.usuarios.map(
+          (user) =>
+            new Usuario(
+              user.nombre,
+              user.email,
+              '',
+              user.img,
+              user.google,
+              user.role,
+              user.uuid
+            )
+        );
+        return {
+          total: resp.total,
+          usuarios,
+        };
+      })
+    );
   }
 
-
-  eliminarUsuario( usuario: Usuario ) {
+  eliminarUsuario(usuario: Usuario) {
     const url = `${base_url}/usuarios/${usuario.uuid}`;
     return this.http.delete(url, this.headers);
-
   }
 
   guardarUsuario(usuario: Usuario) {
-    return this.http.put(`${base_url}/usuarios/${usuario.uuid}`, usuario, this.headers);
+    return this.http.put(
+      `${base_url}/usuarios/${usuario.uuid}`,
+      usuario,
+      this.headers
+    );
   }
-
-
 }

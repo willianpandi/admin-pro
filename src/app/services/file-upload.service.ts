@@ -13,7 +13,7 @@ export class FileUploadService {
     archivo:File,
     tipo: 'usuarios'|'medicos'|'hospitales',
     id: string,
-  ): Promise<any>  {
+  ) {
     try {
 
       const url = `${ base_url }/upload/${ tipo }/${id}`;
