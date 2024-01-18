@@ -14,6 +14,8 @@ import { UsuariosComponent } from "./mantenimientos/usuarios/usuarios.component"
 import { HospitalesComponent } from "./mantenimientos/hospitales/hospitales.component";
 import { MedicosComponent } from "./mantenimientos/medicos/medicos.component";
 import { MedicoComponent } from "./mantenimientos/medicos/medico.component";
+import { BusquedaComponent } from "./busqueda/busqueda.component";
+import { AdminGuard } from "../guards/admin.guard";
 
 const routes: Routes = [
 
@@ -25,6 +27,7 @@ const routes: Routes = [
 
       { path: '', component: DashboardComponent, data: {titulo: 'Dashboard'} },
       { path: 'progress', component: ProgressComponent, data: {titulo: 'Progress'} },
+      { path: 'buscar/:termino', component: BusquedaComponent, data: {titulo: 'Resultado de busqueda'} },
       { path: 'grafica1', component: Grafica1Component, data: {titulo: 'Grafica 1'} },
       { path: 'account-settings', component: AccountSettingsComponent, data: {titulo: 'Settings'} },
       { path: 'promesas', component: PromesasComponent , data: {titulo: 'Promesas'}},
@@ -32,11 +35,11 @@ const routes: Routes = [
       { path: 'rxjs', component: RxjsComponent, data: {titulo: 'RxJs'} },
       // { path: '', redirectTo: '/dashboard', pathMatch: 'full'},
 
-      //Mantenimiento
-      { path: 'usuarios', component: UsuariosComponent, data: {titulo: 'Usuarios de aplicacion'} },
-      { path: 'hospitales', component: HospitalesComponent, data: {titulo: 'Hospitales de aplicacion'} },
-      { path: 'medicos', component: MedicosComponent, data: {titulo: 'Medicos de aplicacion'} },
-      { path: 'medico/:id', component: MedicoComponent, data: {titulo: 'Medico'} },
+      //Admin Rutas
+      { path: 'usuarios', canActivate: [AdminGuard], component: UsuariosComponent, data: {titulo: 'Usuarios de aplicacion'} },
+      { path: 'hospitales',canActivate: [AdminGuard], component: HospitalesComponent, data: {titulo: 'Hospitales de aplicacion'} },
+      { path: 'medicos',canActivate: [AdminGuard], component: MedicosComponent, data: {titulo: 'Medicos de aplicacion'} },
+      { path: 'medico/:id', canActivate: [AdminGuard], component: MedicoComponent, data: {titulo: 'Medico'} },
 
     ]
   },

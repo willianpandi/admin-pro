@@ -24,6 +24,10 @@ export class UsuarioService {
     private ngZone: NgZone
   ) {}
 
+  get role(): 'ADMIN_ROLE' | 'USER_ROLE' {
+    return this.usuario.role;
+  }
+
   get token(): string {
     return localStorage.getItem('token') || '';
   }
@@ -40,8 +44,14 @@ export class UsuarioService {
     };
   }
 
+  guardarLocalSTorage( token: string, menu: any){
+    localStorage.setItem('token', token);
+    localStorage.setItem('menu',JSON.stringify(menu) );
+
+  }
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('menu');
     google.accounts.id.revoke('pandiwillian@gmail.com', () => {
       this.ngZone.run(() => {
         this.router.navigateByUrl('/login');
@@ -68,7 +78,7 @@ export class UsuarioService {
             role,
             uuid
           );
-          localStorage.setItem('token', resp.token);
+          this.guardarLocalSTorage( resp.token, resp.menu );
           return true;
         }),
         catchError((error) => of(false))
@@ -78,7 +88,8 @@ export class UsuarioService {
   crearUsuario(formData: RegisterForm) {
     return this.http.post(`${base_url}/usuarios`, formData).pipe(
       tap((resp: any) => {
-        localStorage.setItem('token', resp.token);
+        this.guardarLocalSTorage( resp.token, resp.menu );
+
       })
     );
   }
@@ -98,14 +109,18 @@ export class UsuarioService {
   login(formData: LoginForm) {
     return this.http.post(`${base_url}/login`, formData).pipe(
       tap((resp: any) => {
-        localStorage.setItem('token', resp.token);
+        this.guardarLocalSTorage( resp.token, resp.menu );
+
+
       })
     );
   }
   loginGoogle(token: string) {
     return this.http.post(`${base_url}/login/google`, { token }).pipe(
       tap((resp: any) => {
-        localStorage.setItem('token', resp.token);
+        this.guardarLocalSTorage( resp.token, resp.menu );
+
+
       })
     );
   }
